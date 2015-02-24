@@ -1,0 +1,4 @@
+02/04/2015 02:29:08 PM WARNING: Entity.entity_add(): Entity was not added, id urn::Sevilla:Sevici1 already exists
+02/04/2015 02:29:36 PM WARNING: ContextBroker.discover_context_availability(): Empty entity_list was passed to the function.
+02/12/2015 02:25:49 PM WARNING: ContextBroker.get_response(): ('Connection aborted.', error(10061, 'No se puede establecer una conexi\xf3n ya que el equipo de destino deneg\xf3 expresamente dicha conexi\xf3n'))
+02/13/2015 01:31:40 PM WARNING: ContextBroker.get_response(): ('Connection aborted.', error(10061, 'No se puede establecer una conexi\xf3n ya que el equipo de destino deneg\xf3 expresamente dicha conexi\xf3n'))
