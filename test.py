@@ -10,7 +10,7 @@ def action():
     headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
     response = requests.get('http://datos.santander.es/api/rest/datasets/control_flotas_posiciones.json', headers=headers)
 
-    epsg3857 = pyproj.Proj(init='epsg:3857')
+    epsg23030 = pyproj.Proj(init='EPSG:23030')
     wgs84 = pyproj.Proj(init='EPSG:4326')
 
     for i in range(len(response.json()['resources'])):
@@ -21,8 +21,8 @@ def action():
 
             if attrib == 'ayto:geolon':
 
-                pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['ayto:geolon']),float(response.json()['resources'][i]['ayto:geolat']))
-                position = "%s,-%s" %(str(pos[0]), str(pos[1]))
+                pos = pyproj.transform(epsg23030,wgs84, float(response.json()['resources'][i]['ayto:geolat']),float(response.json()['resources'][i]['ayto:geolon']))
+                position = "%s,%s" %(str(pos[1]), str(pos[0]))
                 o.entity.attribute.attribute_add('position','coords',value=position)
                 o.entity.attribute.metadata.metadata_add('location', 'string', 'WGS84')
                 o.entity.attribute.add_metadatas_to_attrib('position')
@@ -30,8 +30,8 @@ def action():
 
             elif attrib == 'geom2d:x':
 
-                pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['geom2d:y']),float(response.json()['resources'][i]['geom2d:x']))
-                position = "%s,%s" %(str(pos[0]), str(pos[1]))
+                pos = pyproj.transform(epsg23030,wgs84, float(response.json()['resources'][i]['geom2d:x']),float(response.json()['resources'][i]['geom2d:y']))
+                position = "%s,%s" %(str(pos[1]), str(pos[0]))
                 o.entity.attribute.attribute_add('area','coords',value=position)
                 o.entity.attribute.metadata.metadata_add('area_location', 'string', 'WGS84')
                 o.entity.attribute.add_metadatas_to_attrib('area')
