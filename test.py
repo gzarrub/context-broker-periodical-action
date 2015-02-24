@@ -20,7 +20,7 @@ for i in range(len(response.json()['resources'])):
         if attrib == 'ayto:geolon':
 
             pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['ayto:geolon']),float(response.json()['resources'][i]['ayto:geolat']))
-            position = "%s,%s" %(str(pos[0]), str(pos[1]))
+            position = "%s,-%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('position','coords',value=position)
             o.entity.attribute.metadata.metadata_add('location', 'string', 'WGS84')
             o.entity.attribute.add_metadatas_to_attrib('position')
