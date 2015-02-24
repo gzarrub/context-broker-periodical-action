@@ -26,7 +26,7 @@ for i in range(len(response.json()['resources'])):
 
         elif attrib in ['geom2d:x','geom2d:y']:
             pos = (0,0)
-            pos = pyproj.transform(epsg3857,wgs84, float(data[''geom2d:y'']),float(data[''geom2d:x'']))
+            pos = pyproj.transform(epsg3857,wgs84, float(data['geom2d:y']),float(data['geom2d:x']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('area','coords',value=position)
             o.entity.attribute.metadata.metadata_add('area', 'string', 'WGS84')
