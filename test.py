@@ -31,10 +31,10 @@ response = requests.get('http://datos.santander.es/api/rest/datasets/control_flo
 # wgs84 = pyproj.Proj(init='EPSG:4326')
 
 for i in range(len(response.json()['resources'])):
-    entity_id = "urn:x-iot:smartsantander:ayto:vehicle:%s" % response.json()['resources'][i]['ayto:vehiculo']
+    entity_id = "urn:x-iot:smartsantander:ayto:vehicle:%s:%s" % (response.json()['resources'][i]['ayto:vehiculo'],response.json()['resources'][i]['ayto:indice'])
     o.entity.entity_add(entity_id,'test')
     for attrib in response.json()['resources'][i]:
-        if attrib in ['ayto:geolon','ayto:geolat'] and 'coords' not in o.entity.attribute.get_attribute_list():
+        if attrib in ['ayto:geolon','ayto:geolat']:
             pos = (0,0)
             # pos = pyproj.transform(epsg3857,wgs84, float(data['ayto:geolat']),float(data['ayto:geolon']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
@@ -43,7 +43,7 @@ for i in range(len(response.json()['resources'])):
             o.entity.attribute.add_metadatas_to_attrib('location')
             o.entity.attribute.metadata.metadata_list_purge()
 
-        elif attrib in ['ayto:geom2d:x','ayto:geom2d:y'] and 'area' not in o.entity.attribute.get_attribute_list():
+        elif attrib in ['geom2d:x','geom2d:y']:
             pos = (0,0)
             # pos = pyproj.transform(epsg3857,wgs84, float(data[''geom2d:y'']),float(data[''geom2d:x'']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
@@ -55,7 +55,7 @@ for i in range(len(response.json()['resources'])):
         elif attrib in ['ayto:instante', 'dc:modified']:
             o.entity.attribute.attribute_add(attrib,'urn:x-ogc:def:trs:IDAS:1.0:ISO8601',value=response.json()['resources'][i][attrib])
 
-        elif attrib == 'ayto:vehiculo':
+        elif attrib in ['ayto:vehiculo', 'ayto:indice']:
             pass
         else:
             attrib_type = 'string'
