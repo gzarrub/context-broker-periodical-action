@@ -49,4 +49,4 @@ def action():
         o.entity.add_attributes_to_entity(entity_id)
         o.entity.attribute.attribute_list_purge()
 
-    print o.update_context()
+        o.update_context()
