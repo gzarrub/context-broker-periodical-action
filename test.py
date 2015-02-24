@@ -23,7 +23,7 @@ for i in range(len(response.json()['resources'])):
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('position','coords',value=position)
             o.entity.attribute.metadata.metadata_add('location', 'string', 'WGS84')
-            o.entity.attribute.add_metadatas_to_attrib('location')
+            o.entity.attribute.add_metadatas_to_attrib('position')
             o.entity.attribute.metadata.metadata_list_purge()
 
         elif attrib == 'geom2d:x':
