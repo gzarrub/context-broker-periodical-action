@@ -45,6 +45,4 @@ for i in range(len(response.json()['resources'])):
     o.entity.add_attributes_to_entity(entity_id)
     o.entity.attribute.attribute_list_purge()
 
-
-
-print o.entity.get_entity_list()
+o.update_context()
