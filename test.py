@@ -13,7 +13,7 @@ wgs84 = pyproj.Proj(init='EPSG:4326')
 
 for i in range(len(response.json()['resources'])):
     entity_id = "urn:x-iot:smartsantander:ayto:vehicle:%s:%s" % (response.json()['resources'][i]['ayto:vehiculo'],response.json()['resources'][i]['ayto:indice'])
-    o.entity.entity_add(entity_id,'test')
+    o.entity.entity_add(entity_id,'santander:ayto:vehicle')
     for attrib in response.json()['resources'][i]:
         if attrib in ['ayto:geolon','ayto:geolat']:
             pos = (0,0)
