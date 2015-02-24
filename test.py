@@ -17,7 +17,7 @@ for i in range(len(response.json()['resources'])):
     for attrib in response.json()['resources'][i]:
         if attrib in ['ayto:geolon','ayto:geolat']:
             pos = (0,0)
-            pos = pyproj.transform(epsg3857,wgs84, float(data['ayto:geolat']),float(data['ayto:geolon']))
+            pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['ayto:geolat']),float(response.json()['resources'][i]['ayto:geolon']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('position','coords',value=position)
             o.entity.attribute.metadata.metadata_add('location', 'string', 'WGS84')
@@ -26,7 +26,7 @@ for i in range(len(response.json()['resources'])):
 
         elif attrib in ['geom2d:x','geom2d:y']:
             pos = (0,0)
-            pos = pyproj.transform(epsg3857,wgs84, float(data['geom2d:y']),float(data['geom2d:x']))
+            pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['geom2d:y']),float(response.json()['resources'][i]['geom2d:x']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('area','coords',value=position)
             o.entity.attribute.metadata.metadata_add('area', 'string', 'WGS84')
