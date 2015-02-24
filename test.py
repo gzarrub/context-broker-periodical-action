@@ -14,18 +14,20 @@ wgs84 = pyproj.Proj(init='EPSG:4326')
 for i in range(len(response.json()['resources'])):
     entity_id = "urn:x-iot:smartsantander:ayto:vehicle:%s:%s" % (response.json()['resources'][i]['ayto:vehiculo'],response.json()['resources'][i]['ayto:indice'])
     o.entity.entity_add(entity_id,'santander:ayto:vehicle')
+
     for attrib in response.json()['resources'][i]:
-        if attrib in ['ayto:geolon','ayto:geolat']:
-            pos = (0,0)
-            pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['ayto:geolat']),float(response.json()['resources'][i]['ayto:geolon']))
+
+        if attrib == 'ayto:geolon':
+
+            pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['ayto:geolon']),float(response.json()['resources'][i]['ayto:geolat']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('position','coords',value=position)
             o.entity.attribute.metadata.metadata_add('location', 'string', 'WGS84')
             o.entity.attribute.add_metadatas_to_attrib('location')
             o.entity.attribute.metadata.metadata_list_purge()
 
-        elif attrib in ['geom2d:x','geom2d:y']:
-            pos = (0,0)
+        elif attrib == 'geom2d:x':
+
             pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['geom2d:y']),float(response.json()['resources'][i]['geom2d:x']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('area','coords',value=position)
@@ -36,7 +38,7 @@ for i in range(len(response.json()['resources'])):
         elif attrib in ['ayto:instante', 'dc:modified']:
             o.entity.attribute.attribute_add(attrib,'urn:x-ogc:def:trs:IDAS:1.0:ISO8601',value=response.json()['resources'][i][attrib])
 
-        elif attrib in ['ayto:vehiculo', 'ayto:indice']:
+        elif attrib in ['ayto:vehiculo', 'ayto:indice', 'geom2d:y', 'ayto:geolat']:
             pass
         else:
             attrib_type = 'string'
@@ -45,4 +47,4 @@ for i in range(len(response.json()['resources'])):
     o.entity.add_attributes_to_entity(entity_id)
     o.entity.attribute.attribute_list_purge()
 
-o.update_context()
+print o.update_context()
