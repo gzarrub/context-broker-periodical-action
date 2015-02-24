@@ -31,7 +31,7 @@ for i in range(len(response.json()['resources'])):
             pos = pyproj.transform(epsg3857,wgs84, float(response.json()['resources'][i]['geom2d:y']),float(response.json()['resources'][i]['geom2d:x']))
             position = "%s,%s" %(str(pos[0]), str(pos[1]))
             o.entity.attribute.attribute_add('area','coords',value=position)
-            o.entity.attribute.metadata.metadata_add('area', 'string', 'WGS84')
+            o.entity.attribute.metadata.metadata_add('area_location', 'string', 'WGS84')
             o.entity.attribute.add_metadatas_to_attrib('area')
             o.entity.attribute.metadata.metadata_list_purge()
 
