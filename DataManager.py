@@ -39,6 +39,8 @@ class Metadata():
             if i['name'] == name:
                 msg = "Metadata.metadata_add(): Metadata name %s is already in use" % name
                 data_manager_error(msg)
+                return self.get_metadata_list()[:]
+
         self.get_metadata_list().append(metadata_dict)
 
         return self.get_metadata_list()[:]
@@ -122,6 +124,7 @@ class Attributes():
             if i['name'] == name:
                 msg = "Attributes.attribute_add(): Attribute name %s is already in use" % name
                 data_manager_error(msg)
+                return self.get_attribute_list()[:]
 
         self.get_attribute_list().append(attribute_dict)
 
@@ -221,6 +224,7 @@ class Entity():
             if i['id'] == entity_id:
                 msg = "Entity.entity_add(): Entity was not added, id %s already exists" % entity_id
                 data_manager_error(msg)
+                return self.get_entity_list()[:]
 
         self.get_entity_list().append(entity_dict)
 
