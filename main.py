@@ -1,11 +1,11 @@
 import test as t
-
+import logging
 import time
 import os
 
+logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', filename='log/error.log', level=logging.WARNING)
+
 from apscheduler.schedulers.background import BackgroundScheduler
-
-
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()

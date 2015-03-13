@@ -1,5 +1,6 @@
 __author__ = 'b.gzr'
 import functions as f
+import datetime
 import requests
 import pyproj
 import time
@@ -11,8 +12,13 @@ def action():
     response = requests.get('http://datos.santander.es/api/rest/datasets/control_flotas_posiciones.json', headers=headers)
     
     #saving all the data in files
-#    filename = "files/"+str(int(time.time()))
-#    print filename
+
+    # filename = "files/"+str(int(time.time()))
+    # with open(filename, 'a') as datafile:
+    #         log_str = '%s\n' % response.text
+    #         datafile.write(log_str)
+    #         datafile.close()
+
 
     file = open(filename,"w")
     file.write(response.text)
@@ -61,10 +67,12 @@ def action():
         o.entity.add_attributes_to_entity(entity_id)
         o.entity.attribute.attribute_list_purge()
 
-        o.update_context()
-#	print o.update_context().text  #Muestra la respuesta de CB para cada update
-#   o.update_context() # hace el update de todas las entidades del json a la vez, muchos warnings por entidades repetidas
+        # if entity_id == 'bus.182':
+        #     print o.entity.get_entity_list()
+
+        CBresponse = o.update_context()
+
+        # if entity_id == 'bus.182':
+        #     print CBresponse.json()['contextResponses'][0]['statusCode']
 
 
-if __name__ == '__main__':
-    action()
