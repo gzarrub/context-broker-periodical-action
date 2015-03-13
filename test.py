@@ -19,11 +19,6 @@ def action():
     #         datafile.write(log_str)
     #         datafile.close()
 
-
-    file = open(filename,"w")
-    file.write(response.text)
-    file.close()
-
     epsg23030 = pyproj.Proj(init='EPSG:23030')
     wgs84 = pyproj.Proj(init='EPSG:4326')
 
@@ -67,12 +62,12 @@ def action():
         o.entity.add_attributes_to_entity(entity_id)
         o.entity.attribute.attribute_list_purge()
 
-        # if entity_id == 'bus.182':
-        #     print o.entity.get_entity_list()
+        if entity_id == 'bus.182':
+            print o.entity.get_entity_list()
 
         CBresponse = o.update_context()
 
-        # if entity_id == 'bus.182':
-        #     print CBresponse.json()['contextResponses'][0]['statusCode']
+        if entity_id == 'bus.182':
+            print CBresponse.json()['contextResponses'][0]['statusCode']
 
 
