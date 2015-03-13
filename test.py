@@ -9,6 +9,14 @@ def action():
     o = f.ContextBroker('http://130.206.85.12:1026')
     headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
     response = requests.get('http://datos.santander.es/api/rest/datasets/control_flotas_posiciones.json', headers=headers)
+    
+    #saving all the data in files
+#    filename = "files/"+str(int(time.time()))
+#    print filename
+
+    file = open(filename,"w")
+    file.write(response.text)
+    file.close()
 
     epsg23030 = pyproj.Proj(init='EPSG:23030')
     wgs84 = pyproj.Proj(init='EPSG:4326')
@@ -54,3 +62,9 @@ def action():
         o.entity.attribute.attribute_list_purge()
 
         o.update_context()
+#	print o.update_context().text  #Muestra la respuesta de CB para cada update
+#   o.update_context() # hace el update de todas las entidades del json a la vez, muchos warnings por entidades repetidas
+
+
+if __name__ == '__main__':
+    action()
