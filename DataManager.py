@@ -1,11 +1,13 @@
 __author__ = 'b.gzr'
 import warnings
 import logging
-
+import os
+import inspect
 
 
 def data_manager_error(message):
-    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', filename='log/error.log', level=logging.WARNING)
+    cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+    logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p', filename='%s/log/error.log' % cmd_folder, level=logging.WARNING)
     warnings.warn(message)
     logging.warning(message)
 

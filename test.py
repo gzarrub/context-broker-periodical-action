@@ -62,12 +62,4 @@ def action():
         o.entity.add_attributes_to_entity(entity_id)
         o.entity.attribute.attribute_list_purge()
 
-        if entity_id == 'bus.182':
-            print o.entity.get_entity_list()
-
-        CBresponse = o.update_context()
-
-        if entity_id == 'bus.182':
-            print CBresponse.json()['contextResponses'][0]['statusCode']
-
-
+        o.update_context()

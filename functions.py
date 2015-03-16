@@ -1,4 +1,6 @@
 __author__ = 'b.gzr'
+import os
+import inspect
 import json
 import requests
 import datetime
@@ -241,7 +243,9 @@ class ContextBroker():
             z += 1
         self.clean_all()
 
-        with open('./log/registration.log', 'a') as log:
+        cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0]))
+
+        with open('%s/log/registration.log' % cmd_folder, 'a') as log:
             log_str = '%s %s\n %s\n %s\n' % (datetime.datetime.now(), self.CBurl, payload, response.text)
             log.write(log_str)
             log.close()
