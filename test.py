@@ -18,10 +18,11 @@
 
 __author__ = 'b.gzr'
 import functions as f
-import datetime
 import requests
+import inspect
 import pyproj
 import time
+import os
 
 
 def action():
@@ -30,12 +31,12 @@ def action():
     response = requests.get('http://datos.santander.es/api/rest/datasets/control_flotas_posiciones.json', headers=headers)
     
     #saving all the data in files
-
-    # filename = "files/"+str(int(time.time()))
-    # with open(filename, 'a') as datafile:
-    #         log_str = '%s\n' % response.text
-    #         datafile.write(log_str)
-    #         datafile.close()
+    cmd_folder = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+    filename = "%s/files/%s" % (cmd_folder, str(int(time.time())))
+    with open(filename, 'a') as datafile:
+            log_str = '%s\n' % response.text
+            datafile.write(log_str)
+            datafile.close()
 
     epsg23030 = pyproj.Proj(init='EPSG:23030')
     wgs84 = pyproj.Proj(init='EPSG:4326')
