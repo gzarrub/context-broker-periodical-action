@@ -17,12 +17,14 @@
 # along with Orion Context Broker. If not, see http://www.gnu.org/licenses/.
 
 __author__ = 'b.gzr'
-import functions as f
-import requests
 import inspect
-import pyproj
 import time
 import os
+
+import requests
+import pyproj
+
+import tools.functions as f
 
 
 def action():

@@ -20,9 +20,9 @@ __author__ = 'b.gzr'
 import os
 import inspect
 import json
-import requests
 import datetime
-import DataManager as DM
+import requests
+import tools.DataManager as DM
 
 
 class ContextBroker():
