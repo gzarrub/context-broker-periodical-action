@@ -18,12 +18,64 @@
 
 __author__ = 'b.gzr'
 import os
-import inspect
+import sys
 import json
+import inspect
+import getpass
 import datetime
 import requests
 import tools.DataManager as DM
 
+
+def get_new_token():
+    user = raw_input("Username (e-mail): ")
+    pswd = getpass.getpass(stream=sys.stderr, prompt="Password: ")
+
+    data = {
+        "username": user,
+        "password": pswd,
+    }
+
+    payload = json.dumps(data)
+    headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+    response = requests.post("https://orion.lab.fiware.org/token", headers=headers, data=payload)
+
+    if response.status_code == 200:
+        file_path = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+        if not os.path.exists('%s/auth/auth.dat' % file_path):
+            if not os.path.exists('%s/auth' % file_path):
+                os.mkdir('%s/auth' % file_path)
+            with open('%s/auth/auth.dat' % file_path, 'w') as json_file:
+                j_data = json.dumps({'token': response.text})
+                json_file.write(j_data)
+                json_file.close()
+    else:
+        print response.json()['message']
+
+
+def check_token(cb_url):
+
+    file_path = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+
+    if not os.path.exists('%s/auth/auth.dat' % file_path):
+        if not os.path.exists('%s/auth' % file_path):
+            os.mkdir('%s/auth' % file_path)
+        with open('%s/auth/auth.dat' % file_path, 'w') as json_file:
+            j_data = json.dumps({'token': ''})
+            json_file.write(j_data)
+            json_file.close()
+
+    with open('%s/auth/auth.dat' % file_path, 'r') as json_file:
+
+        try:
+            token = json.loads(json_file.read())['token']
+            headers = {'Content-Type': 'application/json', "X-Auth-Token": token, 'Accept': 'application/json'}
+            response = requests.post(cb_url, headers=headers)
+            json_file.close()
+            return response.status_code
+
+        except ValueError:
+            return 401
 
 class ContextBroker():
     def __init__(self, cb_url, user='', password=''):
@@ -38,6 +90,8 @@ class ContextBroker():
             self.orion = True
             self.user = user
             self.password = password
+            if check_token(cb_url) == 401:
+                get_new_token()
             self.get_auth_token()
 
         if cb_url[len(cb_url)-1] == '/':
@@ -52,22 +106,20 @@ class ContextBroker():
             :rtype : unicode
         """
         try:
-            # data = {
-            #     "auth": {
-            #         "passwordCredentials": {
-            #             "username": self.user,
-            #             "password": self.password,
-            #         }
-            #     }
-            # }
-            # payload = json.dumps(data)
-            # headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
-            # response = requests.post("http://cloud.lab.fiware.org:4730/v2.0/tokens", headers=headers, data=payload)
-            # if response.status_code == 200:
-            #     self.token = response.json()['access']['token']['id']
-            # print self.token
-            self.token = '0vm3yTQ0MzuLaFR7GDJgVFcKRU0n9Swtzp82CpSvFllTOwUA8oRGiYZdqqnVhVnJIkEzXfYtwayRakSHPmfaGQ'
-            
+            file_path = os.path.realpath(os.path.abspath(os.path.split(inspect.getfile(inspect.currentframe()))[0]))
+
+            if not os.path.exists('%s/auth/auth.dat' % file_path):
+                if not os.path.exists('%s/auth' % file_path):
+                    os.mkdir('%s/auth' % file_path)
+                with open('%s/auth/auth.dat' % file_path, 'w') as json_file:
+                    j_data = json.dumps({'token': ''})
+                    json_file.write(j_data)
+                    json_file.close()
+
+            with open('%s/auth/auth.dat' % file_path, 'r') as json_file:
+                self.token = json.loads(json_file.read())['token']
+                json_file.close()
+
         except Exception as e:
             msg = "OrionAction.get_auth_token(): %s" % e
             DM.data_manager_error(msg)
