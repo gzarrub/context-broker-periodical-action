@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with Orion Context Broker. If not, see http://www.gnu.org/licenses/.
 
-import test as t
+import santander_bus as sb
 import logging
 import inspect
 import time
@@ -29,7 +29,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()
-    scheduler.add_job(t.action, 'interval', seconds=30)
+    scheduler.add_job(sb.action, 'interval', seconds=30)
     scheduler.start()
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
 
