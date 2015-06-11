@@ -27,6 +27,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%m
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
+
 if __name__ == '__main__':
     scheduler = BackgroundScheduler()
     scheduler.add_job(sb.action, 'interval', seconds=30)
